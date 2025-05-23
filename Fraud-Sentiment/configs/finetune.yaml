@@ -1,0 +1,31 @@
+# 斷詞與關鍵字標註微調設定檔
+
+# 訓練資料路徑（BIO 格式）
+data_path: data/ws_finetune_sample.txt
+
+# 預訓練模型名稱或路徑
+pretrained_model_path: ckiplab/bert-base-chinese-ws
+
+# 微調後模型儲存路徑
+output_dir: finetuned_ws/
+
+# 訓練參數
+num_train_epochs: 5
+per_device_train_batch_size: 16
+per_device_eval_batch_size: 16
+learning_rate: 2e-5
+weight_decay: 0.01
+logging_steps: 50
+save_steps: 200
+evaluation_strategy: steps
+
+# 隨機種子
+seed: 42
+
+# 是否使用 GPU
+no_cuda: false
+
+# 其他可選參數（依你的腳本支援情況增減）
+# warmup_steps: 0
+# max_seq_length: 128
+# gradient_accumulation_steps: 1
