@@ -73,6 +73,8 @@ line-scam-detection-bot/
 └── ...
 
 
+
+
 ## 🚀 安裝與啟動 (Installation & Setup)
 
 ### 1. 克隆儲存庫 (Clone the repository)
@@ -82,6 +84,7 @@ line-scam-detection-bot/
 ```bash
 git clone [https://github.com/kuan0415/line-scam-detection-bot.git](https://github.com/kuan0415/line-scam-detection-bot.git)
 cd line-scam-detection-bot # 進入專案根目錄 (即你的 repo-main 資料夾)
+
 2. 設置虛擬環境 (Set up Virtual Environment)
 強烈建議使用虛擬環境來管理專案依賴，以避免與系統或其他專案的依賴衝突：
 
@@ -90,6 +93,7 @@ Bash
 python3 -m venv venv
 source venv/bin/activate # macOS/Linux
 # 或在 Windows 上使用: venv\Scripts\activate
+
 3. 安裝依賴 (Install Dependencies)
 激活虛擬環境後，安裝所有必要的 Python 套件。首先，請確保你已經在專案根目錄下生成了 requirements.txt：
 
@@ -102,6 +106,7 @@ pip freeze > requirements.txt
 Bash
 
 pip install -r requirements.txt
+
 4. 配置環境變數 (Configure Environment Variables)
 在專案的根目錄 (line-scam-detection-bot/) 下，複製 .env.example 檔案並將其命名為 .env：
 
