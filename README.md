@@ -28,7 +28,6 @@ Scam-Bot 是一個結合 **NLP 詐騙偵測模型**與 **LINE Bot** 的現代化
 ## 📁 目錄結構 (Project Structure)
 
 專案的根目錄為 `line-scam-detection-bot/` (或你本地的 `repo-main/`)，其內部結構如下：
-
 line-scam-detection-bot/
 ├── app.py                      # 主應用程式入口 (Flask app)
 ├── requirements.txt            # Python 專案依賴列表
@@ -46,7 +45,7 @@ line-scam-detection-bot/
 │   ├── conversation_service.py # 處理用戶對話邏輯，協調各服務
 │   └── domain/
 │       └── detection/          # 偵測策略模組
-│           ├── init.py
+│           ├── init.py     # Python 包的必要文件
 │           └── detection_service.py # 核心偵測邏輯（本地規則、LLM、BERT）
 │
 ├── models/
@@ -60,7 +59,7 @@ line-scam-detection-bot/
 │   └── stage_definitions.json  # 詐騙階段定義和建議
 │
 ├── utils/
-│   ├── init.py
+│   ├── init.py             # Python 包的必要文件
 │   ├── logger.py               # 日誌配置工具
 │   └── error_handler.py        # 自定義錯誤處理類別
 │
