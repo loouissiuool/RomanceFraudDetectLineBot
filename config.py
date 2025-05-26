@@ -8,7 +8,7 @@ load_dotenv()
 
 class Config:
     # LINE Bot API 憑證
-    LINE_CHANNEL_ACCESS_TOKEN = os.getenv("CHANNEL_ACCESS_TOKEN") # 替換為 CHANNEL_ACCESS_TOKEN
+    LINE_CHANNEL_ACCESS_TOKEN = os.getenv("LINE_CHANNEL_ACCESS_TOKEN") # 替換為 CHANNEL_ACCESS_TOKEN
     LINE_CHANNEL_SECRET = os.getenv("CHANNEL_SECRET")         # 替換為 CHANNEL_SECRET
 
     # OpenAI API Key

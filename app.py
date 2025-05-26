@@ -4,27 +4,22 @@ print("👉 This is integratescambot-main version")
 
 from flask import Flask, jsonify
 from config import Config
-from utils.logger import app_logger as logger # 從 utils.logger 導入 app_logger
+from utils.logger import app_logger as logger
 from utils.error_handler import AppError, ConfigError
 from services.conversation_service import ConversationService
 from services.domain.detection.detection_service import DetectionService
 from clients.line_client import LineClient
-from clients.analysis_api import AnalysisApiClient # 如果有外部分析 API
-from bot.line_webhook import line_webhook, LineWebhookHandler # 導入藍圖和處理器
-from dotenv import load_dotenv # 確保這裡也載入 .env
+from clients.analysis_api import AnalysisApiClient
+from bot.line_webhook import line_webhook, LineWebhookHandler
+from dotenv import load_dotenv 
+
+print("👉 This is integratescambot-main version")
 
 def create_app():
     app = Flask(__name__)
 
     # 載入 .env
     load_dotenv()
-
-    # 驗證設定
-    try:
-        Config.validate()
-    except ValueError as e:
-        # 將 ValueError 轉換為 ConfigError，並由 Flask 錯誤處理器處理
-        raise ConfigError(f"配置錯誤: {str(e)}", original_error=e)
 
     # 初始化 line client
     line_client = LineClient(Config.LINE_CHANNEL_ACCESS_TOKEN)
