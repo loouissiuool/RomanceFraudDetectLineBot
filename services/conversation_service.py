@@ -7,6 +7,7 @@ from collections import defaultdict
 from openai import OpenAI
 from config import Config
 from services.domain.detection.detection_service import DetectionService
+from services.gemini_client import GeminiClient
 from clients.line_client import LineClient, COMMON_QR
 from linebot.models import FlexSendMessage, QuickReply # <--- 將 QuickReply 添加到這裡
 
@@ -20,6 +21,12 @@ class ConversationService:
     def __init__(self, detection_service: DetectionService, line_client: LineClient):
         self.detection_service = detection_service
         self.line_client = line_client
+        self.gemini_client = None
+        if Config.GEMINI_API_KEY:
+            try:
+                self.gemini_client = GeminiClient(api_key=Config.GEMINI_API_KEY)
+            except Exception as e:
+                logger.error(f"Gemini init failed: {e}", exc_info=True)
 
         # 用於儲存每個用戶的當前會話狀態，例如最後的檢測結果
         self.STATE = defaultdict(lambda: {"risk": 0, "money_calls": 0, "last_result": {}})
@@ -60,6 +67,13 @@ class ConversationService:
             self.line_client.reply_flex(reply_token, self._build_flex_message_from_content(
                 alt_text="重置偵測", contents=reset_bubble_content, quick_reply=COMMON_QR))
             return
+            
+        if message_text in ["使用 OpenAI", "使用 Gemini"]:
+        model = "openai" if "OpenAI" in message_text else "gemini"
+        self.STATE[user_id]["model"] = model
+        logger.info(f"User {user_id} 切換模型為 {model}")
+        self.line_client.reply_text(reply_token, f"✅ 已切換為 {model.upper()} 模型")
+        return
 
         # --- 特殊指令處理：「聊聊更多」---
         if message_text == "聊聊更多":
@@ -143,19 +157,23 @@ class ConversationService:
         ]) or "無"
 
         prompt = (
-          f"我剛剛偵測到一個訊息，分類結果為階段 {stage_num}（{stage_name_for_explain}），"
-          f"觸發因子有 {trigger_factors}。"
-          "請用 2～3 句話簡單說明為何會做出這樣的判斷。"
-        )
+        f"我剛剛偵測到一個訊息，分類結果為階段 {stage_num}（{stage_name_for_explain}），"
+        f"觸發因子有 {trigger_factors}。請用 2～3 句話簡單說明為何會做出這樣的判斷。"
+    )
+
+    if self.gemini_client:
+        return self.gemini_client.chat(prompt)
+    elif self.openai_client:
         try:
             rsp = self.openai_client.chat.completions.create(
-              model="gpt-4o-mini",
-              messages=[{"role":"user", "content":prompt}]
+                model="gpt-4o-mini",
+                messages=[{"role":"user", "content":prompt}]
             )
             return rsp.choices[0].message.content.strip()
         except Exception as e:
-            logger.error(f"解釋判斷失敗：{e}", exc_info=True)
-            return "抱歉，目前無法提供判斷說明。請確認 OpenAI API Key 或配額是否正常。"
+            logger.error(f"OpenAI 判斷說明失敗：{e}", exc_info=True)
+
+    return "目前無法提供說明，請稍後再試。"
 
 
     def _prevention_suggestions(self, user_id: str) -> str:

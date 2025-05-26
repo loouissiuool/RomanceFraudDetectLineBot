@@ -17,6 +17,8 @@ logger = logging.getLogger(__name__)
 
 # 定義 Quick Reply 按鈕 (全局可用)
 COMMON_QR = QuickReply(items=[
+    QuickReplyButton(action=MessageAction(label="使用 OpenAI", text="使用 OpenAI")),
+    QuickReplyButton(action=MessageAction(label="使用 Gemini", text="使用 Gemini")),
     QuickReplyButton(action=MessageAction(label="下一段偵測", text="下一段偵測")),
     QuickReplyButton(action=MessageAction(label="聊聊更多", text="聊聊更多")),
 ])
