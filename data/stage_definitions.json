@@ -1,95 +1,101 @@
 {
-    "流程名稱": "線上浪漫詐騙綜合流程模型",
-    "描述": "此流程整合了線上約會詐騙 (ODF) 和網絡犯罪集團運作流程中的階段，描述了詐騙活動從初期接觸到後續影響的主要模式與特徵。",
-    "相關模型": [
-      "線上約會詐騙 (ODF) 七階段模型",
-      "網絡犯罪集團五階段運作流程"
-    ],
-    "階段": [
-      {
-        "階段編號": 1,
-        "名稱": "客戶招募 / 犯罪者接觸",
-        "描述": "詐騙流程的起始階段，利用潛在受害者尋找伴侶的需求。主要模式是**創建和使用虛假個人資料**，通常包含極具吸引力的圖片（例如，模特般或使用AI編輯過的照片）和偽造的個人資訊（如身分、職業、地點，常見藉口為軍人或住在大城市以避免見面）。透過約會網站、社交媒體等平台**主動接觸潛在目標**。一個顯著的模式是，在建立初步聯繫後，詐騙者會**提議將對話轉移到約會平台之外的通訊軟體**（如 WhatsApp），這些平台通常不受監控，是重要的警示信號。此階段利用了**對理想伴侶的渴望**和**尋找親密關係的意願**。",
-        "相關模式特徵": [
-          "建立大量帶有吸引力假照片和假資訊的虛假檔案",
-          "使用預設或模板化的接觸訊息",
-          "利用社交媒體進行初步偵查，獲取受害者個人資訊",
-          "提出從約會平台轉移到私人通訊平台的請求",
-          "虛構職業或地點以製造無法見面或視訊的藉口"
-        ],
-        "常用工具/平台": [
-          "約會網站/應用",
-          "社交媒體平台",
-          "WhatsApp, Telegram, Signal 等通訊軟體",
-          "圖像編輯軟體 (AI輔助)"
-        ]
-      },
-      {
-        "階段編號": 2,
-        "名稱": "客戶培養 / 培養感情",
-        "描述": "在此階段，詐騙者專注於**與受害者建立信任和深化虛假浪漫關係**。模式包括**大量使用預設的對話模板、甜言蜜語和愛的表達方式**，以快速營造親密感。利用受害者**善良、脆弱和幫助他人的特質**進行情感操控，使其產生責任感和內疚感。可能會分享**虛假資訊或經過編輯的圖像/語音**來增加其虛假身份的可信度。這個過程是**精心設計且循序漸進的**，旨在讓受害者對詐騙者產生強烈的情感依戀，即使察覺到警示信號也容易被情感依戀所掩蓋（認知失調）。從約會平台轉移到其他平台通常發生在這個階段。",
-        "相關模式特徵": [
-          "持續、頻繁的通訊，快速表達強烈愛意",
-          "使用甜言蜜語和模板化情話",
-          "分享虛假的生活細節或困難",
-          "利用編輯過的圖像或聲音文件維持虛假人設",
-          "情感操控，利用受害者的同情心",
-          "強化受害者對虛假關係的信任和情感依賴"
-        ],
-        "常用工具/平台": [
-          "通訊軟體 (WhatsApp, Telegram, Signal)",
-          "圖像編輯軟體 (AI輔助)",
-          "語音編輯軟體"
-        ]
-      },
-      {
-        "階段編號": 3,
-        "名稱": "初步索取 / 金錢要求",
-        "描述": "此階段的核心模式是**首次提出金錢請求**。詐騙者會編造各種各樣的理由，通常是**看似合理且緊急的困境**，例如突發疾病、旅行受阻、海關問題、投資機會等，要求受害者匯款。這個階段的請求金額通常是**相對較小的數目**（例如 100 到 1,000 美元），目的是**測試受害者的順從程度**並打開索取資金的缺口。利用受害者在情感培養階段建立的**責任感和幫助意願**。",
-        "相關模式特徵": [
-          "編造突發的、需要金錢解決的「緊急情況」",
-          "提出看似有回報的「投資機會」",
-          "請求金額通常不大，作為試水溫",
-          "利用情感連結促使受害者答應請求",
-          "指引受害者使用特定的匯款方式"
-        ],
-        "常用工具/平台": [
-          "線上支付系統 (如 Taptap Send, WorldRemit)",
-          "匯款服務",
-          "銀行轉賬"
-        ]
-      },
-      {
-        "階段編號": 4,
-        "名稱": "突破門檻 / 持續詐騙 / 升級勒索 / 性剝削",
-        "描述": "一旦受害者開始匯款，詐騙者會進入此階段，模式轉變為**持續且變本加厲地索取資金**。會不斷編造新的或升級的「緊急情況」，要求**更大金額的資金轉賬**。詐騙者會使用更複雜的技術或情境來施壓，例如威脅、恐嚇或利用受害者分享過的私密內容進行**性勒索**，迫使受害者繼續匯款或滿足其要求。這個階段**利用了受害者已經投入的情感和金錢沉沒成本**，使其難以停止。詐騙集團中經驗更豐富的成員可能會介入以增加說服力。",
-        "相關模式特徵": [
-          "持續不斷地編造新的困境或需要資金的狀況",
-          "要求數額遠大於初始請求的資金",
-          "可能使用更複雜的詐騙手法或情境",
-          "使用威脅、恐嚇手段",
-          "可能利用私密影像進行勒索",
-          "利用受害者的情感依賴和沉沒成本進行操控"
-        ],
-        "常用工具/平台": [
-          "線上支付系統 / 匯款服務 / 銀行轉賬",
-          "通訊軟體 (用於威脅或勒索)",
-          "可能涉及的勒索工具 (如私密影像)"
-        ]
-      },
-      {
-        "階段編號": 5,
-        "名稱": "再次受害",
-        "描述": "這個階段描述的是受害者在經歷一次浪漫詐騙後的脆弱狀態。模式是**過去的受害經歷會顯著增加未來再次成為浪漫詐騙目標的可能性**，無論是同一詐騙者（可能使用新的藉口或身份）還是其他詐騙者。這可能由於受害者本身的心理特質、其資訊可能在詐騙者之間共享，或他們被標記為「容易目標」列表的一部分。這強調了詐騙的長期影響以及受害者需要持續的支持和警惕。",
-        "相關模式特徵": [
-          "詐騙者可能會再次聯繫過去的受害者",
-          "受害者的信息可能在詐騙集團內或不同集團間共享",
-          "利用受害者過去的被騙經歷作為新的詐騙切入點",
-          "受害者因過去經歷可能表現出更高的脆弱性或對特定情境的信任"
-        ],
-        "常用工具/平台": [
-          "可能涉及詐騙集團內部數據庫或「目標列表」"
-        ]
-      }
-    ]
-  }
+  "workflow_name": "7-Stage Romance Scam Classification Workflow",
+  "description": "This model follows Whitty et al.’s 7‑phase framework to characterize typical patterns and warning signs in romance scam conversations.",
+  "related_models": [
+    "Whitty’s 7-Phase Model of Romance Scam",
+    "ODF (Online Dating Fraud) 7-Stage Model"
+  ],
+  "stages": [
+    {
+      "stage_id": 0,
+      "name": "Find the Dream Mate",
+      "description": "Initial scanning for potential victims; messages are friendly and vague with no explicit requests.",
+      "pattern_features": [
+        "Generic greetings: 'Hi, how are you?'",
+        "Shallow self‑introductions: 'I also live in City X'"
+      ],
+      "common_platforms": [
+        "Dating app messaging",
+        "Social media comments"
+      ]
+    },
+    {
+      "stage_id": 1,
+      "name": "Contact via fake profile",
+      "description": "Start personalized outreach; uses flattery or feigned shared interests to lure the victim.",
+      "pattern_features": [
+        "Compliments: 'You look beautiful/handsome'",
+        "Feigning shared interests: 'I love X too'"
+      ],
+      "common_platforms": [
+        "WhatsApp, Telegram, etc.",
+        "Email"
+      ]
+    },
+    {
+      "stage_id": 2,
+      "name": "Grooming",
+      "description": "Engage in sustained emotional communication, expressing care and long‑term commitment to build trust.",
+      "pattern_features": [
+        "Lengthy caring messages: 'I look forward to talking to you every day'",
+        "Future promises: 'We will travel together'"
+      ],
+      "common_platforms": [
+        "Voice/video calls",
+        "Emotionally rich multimedia messages"
+      ]
+    },
+    {
+      "stage_id": 3,
+      "name": "The Sting",
+      "description": "Create dependency by revealing hardship or emotional pain as a form of manipulation.",
+      "pattern_features": [
+        "Complaints of distress: 'I’ve been feeling so lonely/painful'",
+        "Urgent pleas: 'I don’t know who else to turn to'"
+      ],
+      "common_platforms": [
+        "Private chat apps (WhatsApp, LINE)",
+        "Anonymous chat groups"
+      ]
+    },
+    {
+      "stage_id": 4,
+      "name": "Continuation of the Scam",
+      "description": "Make the first monetary request, citing emergencies or investment opportunities.",
+      "pattern_features": [
+        "Small monetary asks: 'Can you lend me $100?'",
+        "Crisis excuse: 'My medical bills/account is locked'"
+      ],
+      "common_platforms": [
+        "Bank transfers/remittance services",
+        "Cryptocurrency wallets"
+      ]
+    },
+    {
+      "stage_id": 5,
+      "name": "Sexual Exploitation",
+      "description": "Solicit nude photos or sexual content, sometimes to leverage victims for blackmail.",
+      "pattern_features": [
+        "Request for nudes: 'Send me a private photo'",
+        "Suggestive talk: 'Let’s discuss something exciting'"
+      ],
+      "common_platforms": [
+        "One‑on‑one chat apps",
+        "File‑sharing services"
+      ]
+    },
+    {
+      "stage_id": 6,
+      "name": "Re‑victimization",
+      "description": "After the initial scam, return with new lies to extract additional funds or restart the con.",
+      "pattern_features": [
+        "Repeat requests: 'I still need help with that money'",
+        "Role switch: 'I’m your lawyer/friend now'"
+      ],
+      "common_platforms": [
+        "Chat apps/email",
+        "Social media direct messages"
+      ]
+    }
+  ]
+}

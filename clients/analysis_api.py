@@ -13,9 +13,9 @@ class AnalysisApiClient:
     """
     def __init__(self, api_url: str):
         if not api_url:
-            raise AppError("Analysis API URL 未設定。")
+            raise AppError("Analysis API URL isn't set.")
         self.api_url = api_url
-        logger.info(f"AnalysisApiClient 初始化成功，API URL: {api_url}")
+        logger.info(f"AnalysisApiClient initialized successfully, API URL: {api_url}")
 
     def analyze(self, data: dict) -> dict:
         """
@@ -25,14 +25,14 @@ class AnalysisApiClient:
             headers = {"Content-Type": "application/json"}
             res = requests.post(self.api_url, headers=headers, data=json.dumps(data), timeout=5)
             if res.status_code == 200:
-                logger.info(f"API 回傳內容: {res.json()}")
+                logger.info(f"API response content: {res.json()}")
                 return res.json()
             else:
-                logger.warning(f"API 回應錯誤：{res.status_code}, 內容: {res.text}")
-                return {"label": "unknown", "confidence": 0.0, "reply": "目前系統繁忙，請稍後再試。"}
+                logger.warning(f"API response error: {res.status_code}, content: {res.text}")
+                return {"label": "unknown", "confidence": 0.0, "reply": "The system is currently busy, please try again later."}
         except requests.exceptions.RequestException as e:
-            logger.error(f"傳送 API 發生網路錯誤：{e}", exc_info=True)
-            raise AppError("傳送 API 發生網路錯誤。", original_error=e)
+            logger.error(f"A network error occurred while sending the API：{e}", exc_info=True)
+            raise AppError("A network error occurred while sending the API.", original_error=e)
         except Exception as e:
-            logger.error(f"傳送 API 發生未知錯誤：{e}", exc_info=True)
-            raise AppError("傳送 API 發生未知錯誤。", original_error=e)
+            logger.error(f"An unknown error occurred while sending the API：{e}", exc_info=True)
+            raise AppError("An unknown error occurred while sending the API.", original_error=e)

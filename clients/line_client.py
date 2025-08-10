@@ -17,10 +17,10 @@ logger = logging.getLogger(__name__)
 
 # 定義 Quick Reply 按鈕 (全局可用)
 COMMON_QR = QuickReply(items=[
-    QuickReplyButton(action=MessageAction(label="使用 OpenAI", text="使用 OpenAI")),
-    QuickReplyButton(action=MessageAction(label="使用 Gemini", text="使用 Gemini")),
-    QuickReplyButton(action=MessageAction(label="下一段偵測", text="下一段偵測")),
-    QuickReplyButton(action=MessageAction(label="聊聊更多", text="聊聊更多")),
+    QuickReplyButton(action=MessageAction(label="Use OpenAI", text="Use OpenAI")),
+    QuickReplyButton(action=MessageAction(label="Use Gemini", text="Use Gemini")),
+    QuickReplyButton(action=MessageAction(label="Next Detection", text="Next Detection")),
+    QuickReplyButton(action=MessageAction(label="Chat more", text="Chat more")),
 ])
 
 class LineClient:
@@ -29,9 +29,9 @@ class LineClient:
     """
     def __init__(self, channel_access_token: str):
         if not channel_access_token:
-            raise LineClientError("CHANNEL_ACCESS_TOKEN 未設定。") # 修改為 CHANNEL_ACCESS_TOKEN
+            raise LineClientError("CHANNEL_ACCESS_TOKEN isn't set。") # 修改為 CHANNEL_ACCESS_TOKEN
         self.line_bot_api = LineBotApi(channel_access_token)
-        logger.info("LineClient 初始化成功。")
+        logger.info("LineClient initialized successfully。")
 
     def reply_text(self, reply_token: str, text: str):
         """
@@ -40,10 +40,10 @@ class LineClient:
         try:
             msg = TextSendMessage(text=text, quick_reply=COMMON_QR)
             self.line_bot_api.reply_message(reply_token, msg)
-            logger.info(f"成功回覆文字訊息: '{text[:30]}...'")
+            logger.info(f"Successfully replied to text message: '{text[:30]}...'")
         except Exception as e:
-            logger.error(f"回覆文字訊息失敗: {e}", exc_info=True)
-            raise LineClientError(f"回覆文字訊息失敗。", original_error=e)
+            logger.error(f"Failed to reply to text message: {e}", exc_info=True)
+            raise LineClientError(f"Failed to reply to text message", original_error=e)
 
     def reply_flex(self, reply_token: str, flex_message_object: FlexSendMessage):
         """
@@ -51,10 +51,10 @@ class LineClient:
         """
         try:
             self.line_bot_api.reply_message(reply_token, flex_message_object)
-            logger.info(f"成功回覆 Flex Message: '{flex_message_object.alt_text}'")
+            logger.info(f"Successfully replied to Flex Message: '{flex_message_object.alt_text}'")
         except Exception as e:
-            logger.error(f"回覆 Flex Message 失敗: {e}", exc_info=True)
-            raise LineClientError(f"回覆 Flex Message 失敗。", original_error=e)
+            logger.error(f"Failed to replied to Flex Message 失敗: {e}", exc_info=True)
+            raise LineClientError(f"Faield to replied to Flex Message ", original_error=e)
 
     def get_user_profile(self, user_id: str) -> dict:
         """
@@ -67,10 +67,10 @@ class LineClient:
             }
             res = requests.get(url, headers=headers)
             if res.status_code == 200:
-                logger.debug(f"成功獲取用戶 {user_id} 的資料。")
+                logger.debug(f"Successfully obtained the information of user {user_id}")
                 return res.json()
             else:
-                logger.warning(f"取得使用者 {user_id} 資料失敗，狀態碼：{res.status_code}, 內容: {res.text}")
+                logger.warning(f"Failed to obtain user {user_id} information, status code: {res.status_code}, content: {res.text}")
         except Exception as e:
-            logger.error(f"[get_user_profile 錯誤]：{e}", exc_info=True)
+            logger.error(f"[get_user_profile error]: {e}", exc_info=True)
         return {}

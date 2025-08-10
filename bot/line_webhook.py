@@ -25,7 +25,7 @@ class LineWebhookHandler:
     def __init__(self, conversation_service: ConversationService, channel_secret: str):
         self.conversation_service = conversation_service
         self.channel_secret = channel_secret
-        logger.info("LineWebhookHandler 初始化成功。")
+        logger.info("LineWebhookHandler initialized successfully")
 
     def handle_webhook_event(self, body: str, signature: str):
         """
@@ -35,11 +35,11 @@ class LineWebhookHandler:
         # 這是確保請求來自 LINE 的安全措施
         hash_bytes = hmac.new(self.channel_secret.encode(), body.encode("utf-8"), hashlib.sha256).digest()
         if not hmac.compare_digest(base64.b64encode(hash_bytes).decode(), signature):
-            logger.warning("Line Signature 驗證失敗。請求可能來自未授權來源。")
+            logger.warning("Line Signature verification failed. The request may have come from an unauthorized source.")
             raise InvalidSignatureError("Invalid signature")
 
         event_data = json.loads(body)
-        logger.info(f"\n==== [Log] 接收到的 Line Webhook 資料 ====\n{json.dumps(event_data, ensure_ascii=False, indent=2)}")
+        logger.info(f"\n==== [Log] Received Line Webhook data ====\n{json.dumps(event_data, ensure_ascii=False, indent=2)}")
 
         events = event_data.get("events", [])
 
@@ -54,7 +54,7 @@ class LineWebhookHandler:
             is_redelivery = ev.get("deliveryContext", {}).get("isRedelivery", False)
 
             if event_id and event_id in PROCESSED_EVENTS and is_redelivery:
-                logger.info(f"重複的 Webhook 事件 ID: {event_id} (isRedelivery: {is_redelivery}). 跳過處理。")
+                logger.info(f"Duplicate webhook event ID: {event_id} (isRedelivery: {is_redelivery}). Skipping processing.")
                 continue
 
             if event_id:
@@ -87,10 +87,10 @@ def callback():
     try:
         handler.handle_webhook_event(body, signature)
     except InvalidSignatureError:
-        logger.error("Line Signature 驗證失敗。")
+        logger.error("Line Signature verification failed.")
         abort(403) # 403 Forbidden
     except Exception as e:
-        logger.error(f"處理 Webhook 事件時發生錯誤: {e}", exc_info=True)
+        logger.error(f"An error occurred while processing a webhook event: {e}", exc_info=True)
         abort(500) # 500 Internal Server Error
 
     return "OK", 200
