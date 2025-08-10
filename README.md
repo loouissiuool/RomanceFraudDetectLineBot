@@ -1,27 +1,148 @@
-# Scam-Bot 詐騙偵測 LINE Bot
+# Romance-Scam Stage Detector (LINE Bot) / 愛情詐騙階段偵測 LINE 機器人
 
-![LINE Bot](https://img.shields.io/badge/LINE-Bot-00C300?style=for-the-badge&logo=line&logoColor=white)
-![Python](https://img.shields.io/badge/Python-3.9+-blue?style=for-the-badge&logo=python&logoColor=white)
-![Flask](https://img.shields.io/badge/Flask-Framework-black?style=for-the-badge&logo=flask&logoColor=white)
-![OpenAI](https://img.shields.io/badge/OpenAI-API-424242?style=for-the-badge&logo=openai&logoColor=white)
-![Transformers](https://img.shields.io/badge/HuggingFace-Transformers-FFDD00?style=for-the-badge&logo=huggingface&logoColor=black)
+A production-style LINE bot that classifies conversation snippets into a 7-stage romance‑scam model, explains the reasoning (Why & Explain), and suggests prevention tips (Prevent). Built with **Flask (Python)**, LINE Messaging API, and **LLM (OpenAI, optional Gemini)**.  
+以 7 階段愛情詐騙模型為核心的 LINE 機器人：可對對話片段做階段判定、提供可解釋理由（Why & Explain），並給出防範建議（Prevent）。後端以 **Flask (Python)** 建置，串接 LINE Messaging API 與 **LLM（OpenAI，可選 Gemini）**。
 
-## 專案簡介 (Project Introduction)
+---
 
-Scam-Bot 是一個結合 **NLP 詐騙偵測模型**與 **LINE Bot** 的現代化專案，旨在提供即時的詐騙風險分析和警示。它能夠分析用戶透過 LINE 發送的訊息，判斷潛在的詐騙階段和風險等級，並提供相應的建議和防範措施。專案採用清晰的分層架構，便於未來的維護與功能擴展。
+## Contents / 目錄
+- [Features / 功能](#features--功能)
+- [Architecture / 架構](#architecture--架構)
+- [Requirements / 環境需求](#requirements--環境需求)
+- [Setup / 安裝設定](#setup--安裝設定)
+- [Run / 執行](#run--執行)
+- [Environment Variables / 環境變數](#environment-variables--環境變數)
+- [Project Structure / 專案結構](#project-structure--專案結構)
+- [Stage Definitions / 階段定義](#stage-definitions--階段定義)
+- [Notes / 備註](#notes--備註)
+- [License / 授權](#license--授權)
 
-* **主服務**: 負責處理 LINE Webhook 事件、訊息處理流程、詐騙偵測邏輯以及用戶回覆的生成。
-* **模型訓練/推論**: 獨立於 `fraud_sentiment/` 目錄。主服務僅需載入 `models/` 目錄下的預訓練或微調好的模型進行推論。
+---
 
-## ✨ 特性 (Features)
+## Features / 功能
+**EN**
+- Classifies text into a 7‑stage romance‑scam workflow.
+- Generates **Why & Explain** (concise + detailed) and **Prevent** (3 tips + expandable details).
+- Rich **LINE Flex Messages** UI (carousel: overview + triggers; separate explanation and prevention bubbles).
+- Supports **context‑aware** recommended actions (one‑liner tailored to the latest message + stage).
+- Switchable LLM backends (OpenAI; optional Google Gemini).
+- Logs per‑user state and chat history for better continuity.
 
-* **LINE Messaging API 整合**: 無縫接收並處理來自 LINE 用戶的訊息，並實現雙向互動。
-* **多源詐騙偵測策略**:
-    * **本地規則偵測**: 快速基於預設的關鍵字和正則表達式進行基礎判斷。
-    * **OpenAI LLM 深度分析 (已整合)**: 利用先進的 AI 模型對複雜語句進行詐騙階段判斷和標籤分類，提供更精準的分析結果。
-    * **BERT 分類器推論 (支援擴充)**: 支援載入訓練好的 BERT 模型進行高效的文本分類推論。
-* **豐富的 Flex Message 回覆**: 以互動性強、視覺效果佳的 LINE Flex Message 卡片形式展示分析結果、建議行動和相關防範資訊。
-* **環境變數配置**: 通過 `.env` 文件靈活配置 LINE Bot、OpenAI API 憑證和偵測策略，提高安全性與易用性。
-* **獨立模型訓練模組**: `fraud_sentiment/` 包含了用於模型訓練、微調和推論的獨立腳本和資料，便於模型的迭代和管理。
-* **日誌記錄**: 詳盡的日誌輸出，方便開發者追蹤和調試應用程式行為。
+**繁中**
+- 以 7 階段模型判定詐騙對話所處階段。
+- 產生**理由說明**（精簡＋詳細）與**防範建議**（3 點＋可展開詳述）。
+- 使用 **LINE Flex Message** 呈現（摘要＋觸發因子 carousel；另有 explain / prevent 卡片）。
+- **情境式建議行動**：依目前訊息與階段動態產生一句建議。
+- 可切換 LLM 後端（OpenAI；可選 Google Gemini）。
+- 保存使用者狀態與歷史，利於後續互動。
 
+---
+
+## Architecture / 架構
+**EN** – Event‑driven webhook with Flask:
+1. LINE → **Webhook** (Flask) → `ConversationService.handle_message()` / `handle_postback()`  
+2. `ConversationService` orchestrates modules: `DetectionService` (stage + triggers), LLM calls (explanations, tips), and `LineClient` (Flex messages).  
+3. Results are rendered as Flex bubbles: **Overview** (+ dynamic Recommended Action) and **Details & Triggers**; users can tap **Why & Explain** or **Prevent** for further cards.
+
+**繁中** – Flask Webhook 事件驅動：
+1. LINE → **Webhook**（Flask）→ `ConversationService.handle_message()` / `handle_postback()`  
+2. `ConversationService` 協調 `DetectionService`（階段＋觸發因子）、LLM（解釋與建議）、`LineClient`（Flex）等模組。  
+3. 以 Flex 卡片呈現：**摘要卡**（含動態建議行動）與 **詳細卡**（Triggers）；使用者可點 **Why & Explain** 或 **Prevent** 取得更多卡片。
+
+---
+
+## Requirements / 環境需求
+- Python 3.10+
+- LINE Messaging API credentials
+- OpenAI API key (required for LLM features)  
+  Gemini API key (optional)
+
+---
+
+## Setup / 安裝設定
+```bash
+# 1) Clone
+git clone https://github.com/<YOUR_USER>/<YOUR_REPO>.git
+cd <YOUR_REPO>
+
+# 2) (Optional) Create venv
+python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
+
+# 3) Install deps
+pip install -r requirements.txt
+
+# 4) Configure .env or environment variables (see below)
+```
+
+### LINE Webhook
+- Set your webhook URL to `https://<your-domain>/callback` in LINE Developers Console.  
+- Enable messaging permissions and add your bot as a friend for testing.
+
+---
+
+## Run / 執行
+```bash
+# Development
+python app_main.py   # or: flask run
+# Default port can be configured via PORT; common values: 5080 or 8000
+```
+
+For local testing with LINE, expose the port via **ngrok** or a reverse proxy:
+```bash
+ngrok http 5080
+# then set the ngrok https URL as the LINE webhook
+```
+
+---
+
+## Environment Variables / 環境變數
+| Key | Description |
+| --- | --- |
+| `LINE_CHANNEL_SECRET` | LINE webhook signature verification |
+| `LINE_CHANNEL_ACCESS_TOKEN` | LINE Messaging API token |
+| `OPENAI_API_KEY` | OpenAI key for LLM (explanations, prevention tips, dynamic recommended action) |
+| `GEMINI_API_KEY` | (Optional) Google Gemini key |
+| `PORT` | Flask listening port (e.g., 5080) |
+| `FLASK_ENV` | `development` or `production` |
+
+> Place them in `.env` or your hosting provider’s env panel.
+
+---
+
+## Project Structure / 專案結構
+```
+bot_prod/
+├─ app_main.py                 # Flask entrypoint / Webhook server
+├─ bot/
+│  └─ line_webhook.py          # Event routing
+├─ clients/
+│  └─ line_client.py           # LINE API wrapper (reply_text, reply_flex, etc.)
+├─ services/
+│  ├─ conversation_service.py  # Orchestrates detection, LLM, and Flex UI
+│  ├─ gemini_client.py         # Optional Gemini wrapper
+│  └─ domain/
+│     └─ detection/
+│        └─ detection_service.py  # Stage detection + trigger labeling
+├─ config.py                   # Config loader (env)
+└─ stage_definitions.json      # 7-stage model metadata
+```
+
+---
+
+## Stage Definitions / 階段定義
+- The bot follows a 7‑stage romance‑scam model (e.g., **Find the Dream Mate → Contact via Fake Profile → Grooming → The Sting → Continuation → Sexual Exploitation → Re‑victimization**).  
+- `stage_definitions.json` contains the **names**, **short descriptions**, and **pattern features** for UI/LLM prompts.  
+- `DetectionService` returns `stage`, `labels`, and an internal `rationale` object; `ConversationService` renders them via Flex, and produces a **context‑aware one‑line Recommended Action** for the overview bubble.
+
+---
+
+## Notes / 備註
+- If LLM quota is exhausted or API errors occur, the bot gracefully degrades (shows an error state in Flex).
+- **Security**: Never log personal content verbatim in production; mask PII. Use HTTPS for webhook.
+- **Limits**: Stage classification works best with sufficient context; a single very short message may be ambiguous.
+
+---
+
+## License / 授權
+MIT License. See `LICENSE` if provided.
